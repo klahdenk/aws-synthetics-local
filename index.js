@@ -75,7 +75,7 @@ exports.executeHttpStep = async (stepName = null, options, func, stepConfig) => 
   let promise;
   let opts = {
       ...options,
-      baseURL: options.hostname,
+      baseURL: options.protocol + "//" + options.hostname,
       url: options.path,
       responseType: 'stream'
   }
