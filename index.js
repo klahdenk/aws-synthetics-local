@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer")
 const log = require("SyntheticsLogger")
 const path = require("path")
 const fs = require('fs')
+const axios = require('axios');
 let browser
 let page
 
@@ -58,6 +59,39 @@ exports.executeStep = async (stepName = null, func) => {
     const d = end - start
     log.info(`${name}: ${Math.floor(d / 1000)} seconds`)
   }
+}
+
+exports.executeHttpStep = async (stepName = null, options, func, stepConfig) => {
+  index++;
+  let currIdx = index
+
+  let name = ""
+  if (stepName !== null) {
+    name = `-${stepName}`
+  }
+
+  const start = Date.now()
+
+  let promise;
+  let opts = {
+      ...options,
+      baseURL: options.hostname,
+      url: options.path,
+      responseType: 'stream'
+  }
+  try {
+    let response = await axios.request(opts);
+    promise = func(response.data);
+    await promise;  
+    log.info(`executeStep "${currIdx}${name}" succeeded`)
+  } catch (e) {
+    log.info(`executeStep "${currIdx}${name}" failed`)
+  } finally {
+    const end = Date.now()
+    const d = end - start
+    log.info(`${name}: ${Math.floor(d / 1000)} seconds`)
+  }
+
 }
 
 exports.takeScreenshot = async (stepName, suffix) => {
