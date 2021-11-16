@@ -6,6 +6,8 @@ export function getLogLevel(): 0 | 1 | 2 | 3
 
 export function addUserAgent(page: Page, userAgentString: string): Promise<void>
 
+export function executeHttpStep(stepName : null | string, options: any, functionToExecute: Function, stepConfig: any): Promise<void>
+
 export function executeStep(stepName : null | string, functionToExecute: Function): Promise<void>
 
 export function getPage(): Promise<Page>
