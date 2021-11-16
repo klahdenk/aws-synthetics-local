@@ -86,6 +86,7 @@ exports.executeHttpStep = async (stepName = null, options, func, stepConfig) => 
     log.info(`executeStep "${currIdx}${name}" succeeded`)
   } catch (e) {
     log.info(`executeStep "${currIdx}${name}" failed`)
+    throw e;
   } finally {
     const end = Date.now()
     const d = end - start
